@@ -20,6 +20,7 @@ const surveySchema = new mongoose.Schema({
       numberOfVotes: {
         type: Number,
         required: true,
+        default: 0,
       },
     }]
   }],
