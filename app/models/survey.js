@@ -35,7 +35,6 @@ const surveySchema = new mongoose.Schema({
   },
 }, {
   timestamps: true,
-  toJSON: { virtuals: true },
 });
 
 const Survey = mongoose.model('Survey', surveySchema);
