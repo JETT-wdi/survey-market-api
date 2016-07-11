@@ -1,5 +1,5 @@
 curl --include --request POST http://localhost:3000/surveys \
---header "Authorization: Token token=jHkB1HHwXjDZCP8/zaCeklxHPQjViipBTt2iRzM/cgw=--+Tmb7D9zeQKel5vjAWEq7tJyrw7fhBUTZVMksG6v8Ok=" \
+--header "Authorization: Token token=ADD TOKEN" \
 --header "Content-Type: application/json" \
 --data '{
   "survey": {
