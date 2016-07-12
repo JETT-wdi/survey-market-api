@@ -19,7 +19,13 @@ const show = (req, res, next) => {
 };
 
 const create = (req, res, next) => {
-  let survey = Object.assign(req.body.survey, {
+  let survey = Object.assign(
+    {req.body.survey.title,
+    req.body.survey.questions,
+    req.body.survey.questions.query,
+    req.body.survey.questions.option,
+    req.body.survey.questions.numberOfVotes}
+    {
     _owner: req.currentUser._id
   });
   Survey.create(survey)

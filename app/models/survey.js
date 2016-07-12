@@ -7,8 +7,8 @@ const surveySchema = new mongoose.Schema({
         type: String,
       },
       questions: [
-        [{ query: { type: String, }},
-         {option: { type: String, }, numberOfVotes: { type: Number, default: 0 } }
+        [{ query: { type: String}},
+         {option: { type: String }, numberOfVotes: { type: Number }}
         ]
       ],
       _owner: {
