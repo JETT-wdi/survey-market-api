@@ -1,13 +1,6 @@
 'use strict';
-
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
-
-'use strict';
-
-const mongoose = require('mongoose');
-const uniqueValidator = require('mongoose-unique-validator');
-
 const surveySchema = new mongoose.Schema({
   title: {
     type: String,
@@ -27,7 +20,6 @@ const surveySchema = new mongoose.Schema({
       }],
     }]
   }],
-
   _owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
@@ -36,7 +28,6 @@ const surveySchema = new mongoose.Schema({
 }, {
   timestamps: true,
 });
-
 surveySchema.virtual('questions.answers.numVotes').get(function () {
   return this.questions.answers.votes.length;
 });
