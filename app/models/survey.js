@@ -2,25 +2,46 @@
 
 const mongoose = require('mongoose');
 
+'use strict';
+
+const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
+
 const surveySchema = new mongoose.Schema({
-      title: {
+  title: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  questions: [{
+    query: {
+      type: String,
+      required: true,
+    },
+    answers: [{
+      text: {
         type: String,
       },
-      questions: [
-        [{ query: { type: String, }},
-         {option: { type: String, }, numberOfVotes: { type: Number, default: 0 } }
-        ]
-      ],
-      _owner: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'User',
-          required: true,
-        }
-      },
-      {
-        timestamps: true,
-      });
+      votes: [{
+      }],
+    }]
+  }],
 
-    const Survey = mongoose.model('Survey', surveySchema);
+  _owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
+}, {
+  timestamps: true,
+});
 
-    module.exports = Survey;
+surveySchema.virtual('questions.answers.numVotes').get(function () {
+  return this.questions.answers.votes.length;
+});
+
+surveySchema.plugin(uniqueValidator);
+
+const Survey = mongoose.model('Survey', surveySchema);
+
+module.exports = Survey;
