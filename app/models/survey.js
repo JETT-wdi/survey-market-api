@@ -27,6 +27,7 @@ const surveySchema = new mongoose.Schema({
   },
 }, {
   timestamps: true,
+  toJSON: { virtuals: true},
 });
 surveySchema.virtual('questions.answers.numVotes').get(function () {
   return this.questions.answers.votes.length;
