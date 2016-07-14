@@ -2,17 +2,14 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 
-const User = require('./user');
-
 const answerSchema = new mongoose.Schema({
   text: {
     type: String,
   },
   votes: [{
-    // type: String,
-  }],
-  // votes: [ { type: String } ],
-
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+    }],
 }, {
   toJSON: { virtuals: true},
 });
