@@ -9,7 +9,6 @@ const answerSchema = new mongoose.Schema({
   },
   votes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
 }, {
-  timestamps: true,
   toJSON: { virtuals: true},
 });
 
@@ -23,9 +22,6 @@ const questionSchema = new mongoose.Schema({
       required: true,
     },
     answers: [answerSchema]
-}, {
-  timestamps: true,
-  toJSON: { virtuals: true},
 });
 
 
@@ -43,7 +39,6 @@ const surveySchema = new mongoose.Schema({
   },
 }, {
   timestamps: true,
-  toJSON: { virtuals: true},
 });
 
 surveySchema.plugin(uniqueValidator);
