@@ -28,20 +28,24 @@ const create = (req, res, next) => {
 };
 
 const update = (req, res, next) => {
-  let search = { _id: req.params.id, _owner: req.currentUser._id };
-  //comes from request params.
-  Survey.findOne(search)
-    .then(survey => {
-      //if there is no matching example, move on.
-      if (!survey) {
-        return next();
-      }
-      //delete the parameter of owner sent from the request
-      delete req.body._owner;  // disallow owner reassignment.
-      //return the request body example (because res will be blank)
-      return survey.update(req.body.survey)
-        .then(() => res.sendStatus(200)); //but send res status as 200
-    })
+  Survey.findById(req.params.survey._id)
+  .then((survey) => {
+    survey.questions.findById(req.params.survey.questions._id);
+  })
+  .then((question) => {
+    question.answers.findByIdAndUpdate(
+      req.params.survey.questions.answers._id,
+      { $push: {"votes": req.currentUser._id }},
+      {  safe: true, upsert: true},
+      function(err, model) {
+        if(err){
+         console.log(err);
+         return res.send(err);
+        }
+         return res.json(model);
+     });
+  })
+    .then(() => res.sendStatus(200)) //but send res status as 200
     .catch(err => next(err));
 };
 
