@@ -1,13 +1,18 @@
 'use strict';
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
-// const Question = require('./question.js');
+
+const User = require('./user');
 
 const answerSchema = new mongoose.Schema({
   text: {
     type: String,
   },
-  votes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
+  votes: [{
+    // type: String,
+  }],
+  // votes: [ { type: String } ],
+
 }, {
   toJSON: { virtuals: true},
 });

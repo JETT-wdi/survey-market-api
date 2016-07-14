@@ -28,25 +28,24 @@ const create = (req, res, next) => {
 };
 
 const update = (req, res, next) => {
-  Survey.findById(req.params.survey._id)
-  .then((survey) => {
-    survey.questions.findById(req.params.survey.questions._id);
-  })
-  .then((question) => {
-    question.answers.findByIdAndUpdate(
-      req.params.survey.questions.answers._id,
-      { $push: {"votes": req.currentUser._id }},
-      {  safe: true, upsert: true},
-      function(err, model) {
-        if(err){
-         console.log(err);
-         return res.send(err);
-        }
-         return res.json(model);
-     });
-  })
-    .then(() => res.sendStatus(200)) //but send res status as 200
-    .catch(err => next(err));
+  console.log(req.body);
+  console.log(req.body.params);
+  console.log(req.body.survey);
+  //need to properly assign
+  let surveyId = req.body;
+  let questionId = req.body;
+  let answerId = req.body;
+  let userId = req.currentUser._id;
+      Survey.findById(surveyId)
+      .then((survey) => {
+      let question = survey.questions.id(questionId);
+      let answer = question.answers.id(answerId);
+      answer.votes.push(userId);
+      console.log('answer is ', answer);
+      return survey.save();
+    })
+    .then(() => res.sendStatus(200))
+    .catch(err => next(err))
 };
 
 const destroy = (req, res, next) => {
@@ -63,6 +62,7 @@ const destroy = (req, res, next) => {
     })
     .catch(err => next(err));
 };
+
 
 module.exports = controller({
   index,
