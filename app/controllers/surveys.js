@@ -28,21 +28,22 @@ const create = (req, res, next) => {
 };
 
 const update = (req, res, next) => {
-  let search = { _id: req.params.id, _owner: req.currentUser._id };
-  //comes from request params.
-  Survey.findOne(search)
-    .then(survey => {
-      //if there is no matching example, move on.
-      if (!survey) {
-        return next();
-      }
-      //delete the parameter of owner sent from the request
-      delete req.body._owner;  // disallow owner reassignment.
-      //return the request body example (because res will be blank)
-      return survey.update(req.body.survey)
-        .then(() => res.sendStatus(200)); //but send res status as 200
+  //need to properly assign
+  let surveyId = req.params.id;
+      Survey.findById(surveyId)
+      .then((survey) => {
+        let userId = req.currentUser._id;
+        for(let i=0; i<req.body.votesArray.length; i++) {
+          let questionId = req.body.votesArray[i][0];
+          let answerId = req.body.votesArray[i][1];
+          let question = survey.questions.id(questionId);
+          let answer = question.answers.id(answerId);
+          answer.votes.push(userId);
+        }
+      return survey.save();
     })
-    .catch(err => next(err));
+    .then(() => res.sendStatus(200))
+    .catch(err => next(err))
 };
 
 const destroy = (req, res, next) => {
@@ -59,6 +60,7 @@ const destroy = (req, res, next) => {
     })
     .catch(err => next(err));
 };
+
 
 module.exports = controller({
   index,
