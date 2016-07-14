@@ -19,6 +19,8 @@ const show = (req, res, next) => {
 };
 
 const create = (req, res, next) => {
+  console.log(req.body);
+  console.log(req.body.survey)
   let survey = Object.assign(req.body.survey, {
     _owner: req.currentUser._id
   });
@@ -28,20 +30,22 @@ const create = (req, res, next) => {
 };
 
 const update = (req, res, next) => {
-  console.log(req.body);
-  console.log(req.body.params);
-  console.log(req.body.survey);
+  console.log(req.body.votesArray[0]);
   //need to properly assign
-  let surveyId = req.body;
-  let questionId = req.body;
-  let answerId = req.body;
-  let userId = req.currentUser._id;
+  let surveyId = req.params.id;
       Survey.findById(surveyId)
       .then((survey) => {
-      let question = survey.questions.id(questionId);
-      let answer = question.answers.id(answerId);
-      answer.votes.push(userId);
-      console.log('answer is ', answer);
+        let userId = req.currentUser._id;
+        for(let i=0; i<req.body.votesArray.length; i++) {
+          let questionId = req.body.votesArray[i][0];
+          console.log(questionId);
+          let answerId = req.body.votesArray[i][1];
+          console.log()
+          let question = survey.questions.id(questionId);
+          let answer = question.answers.id(answerId);
+          answer.votes.push(userId);
+          console.log('answer is ', answer);
+        }
       return survey.save();
     })
     .then(() => res.sendStatus(200))
