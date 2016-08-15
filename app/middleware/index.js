@@ -10,7 +10,7 @@ const cors = require('cors');
 const loader = require('lib/wiring/loader');
 
 const corsOptions = {
-  origin: process.env.CLIENT_URL || 'https://jett-wdi.github.io',
+  origin: process.env.CLIENT_URL || 'https://jett-wdi.github.io' || 'https://tina513.github.io',
 };
 
 const before = (app) => {
